@@ -16,7 +16,7 @@ Additional minified JavaScript files and Java libraries are used in this project
 We make no copyright claim on the content you create with this software, regardless of the copyright of individual icons used in such content.
 
 Scope of the Project
---------------------
+-------------------
 
 draw.io is a diagramming or whiteboarding application, depending on which theme is selected. It is not an SVG editing app, the SVG export is designed only for embedding in web pages, not for further editing in other tools.
 

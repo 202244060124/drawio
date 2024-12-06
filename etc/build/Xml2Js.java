@@ -17,207 +17,192 @@ import java.util.Set;
 import java.util.zip.Deflater;
 import java.util.Base64;
 
-public class Xml2Js
-{
-	/**
-	 * 
-	 */
-	protected static final int IO_BUFFER_SIZE = 4 * 1024;
+public
 
-	/**
-	 * 
-	 */
-	public static String CHARSET_FOR_URL_ENCODING = "UTF-8";
+class Xml2Js {
+    /**
+     *
+     */
+protected
+    static final int IO_BUFFER_SIZE = 4 * 1024;
 
-	/**
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public List<String> walk(File base, File root) throws IOException
-	{
-		if (root == null)
-		{
-			root = base;
-		}
+    /**
+     *
+     */
+public
+    static String CHARSET_FOR_URL_ENCODING = "UTF-8";
 
-		List<String> result = new LinkedList<String>();
-		String basePath = base.getCanonicalPath();
-		File[] list = root.listFiles();
+    /**
+     *
+     * @param path
+     * @return
+     */
+public
 
-		if (list != null)
-		{
-			for (File f : list)
-			{
-				if (f.isDirectory())
-				{
-					result.addAll(walk(base, f));
-				}
-				else if (f.getCanonicalPath().toLowerCase().endsWith(".xml"))
-				{
-					String name = f.getCanonicalPath()
-							.substring(basePath.length() + 1);
-					result.add(
-							"f['" + name + "'] = '" + processFile(f) + "';\n");
-				}
-			}
-		}
+    List<String> walk(File base, File root) throws IOException
+    {
+        if (root == null) {
+            root = base;
+        }
 
-		return result;
-	}
+        List<String> result = new LinkedList<String>();
+        String basePath = base.getCanonicalPath();
+        File[] list = root.listFiles();
 
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
-	public static String processFile(File file) throws IOException
-	{
-		Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION, true);
-		byte[] inBytes = readInputStream(new FileInputStream(file)).getBytes("UTF-8");
-		deflater.setInput(inBytes);
+        if (list != null) {
+            for (File f : list) {
+                if (f.isDirectory()) {
+                    result.addAll(walk(base, f));
+                } else if (f.getCanonicalPath().toLowerCase().endsWith(".xml")) {
+                    String name = f.getCanonicalPath().substring(basePath.length() + 1);
+                    result.add("f['" + name + "'] = '" + processFile(f) + "';\n");
+                }
+            }
+        }
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
-				inBytes.length);
-		deflater.finish();
-		byte[] buffer = new byte[IO_BUFFER_SIZE];
+        return result;
+    }
 
-		while (!deflater.finished())
-		{
-			int count = deflater.deflate(buffer); // returns the generated code... index  
-			outputStream.write(buffer, 0, count);
-		}
+    /**
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+public
 
-		outputStream.close();
+    static String processFile(File file) throws IOException
+    {
+        Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION, true);
+        byte[] inBytes = readInputStream(new FileInputStream(file)).getBytes("UTF-8");
+        deflater.setInput(inBytes);
 
-		return Base64.getEncoder().encodeToString(outputStream.toByteArray());
-	}
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(inBytes.length);
+        deflater.finish();
+        byte[] buffer = new byte[IO_BUFFER_SIZE];
 
-	/**
-	 * 
-	 * @param stream
-	 * @return
-	 * @throws IOException
-	 */
-	public static String readInputStream(InputStream stream) throws IOException
-	{
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(stream));
-		StringBuffer result = new StringBuffer();
-		String tmp = reader.readLine();
+        while (!deflater.finished()) {
+            int count = deflater.deflate(buffer); // returns the generated code... index
+            outputStream.write(buffer, 0, count);
+        }
 
-		while (tmp != null)
-		{
-			result.append(tmp.trim());
-			tmp = reader.readLine();
-		}
+        outputStream.close();
 
-		reader.close();
+        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+    }
 
-		return result.toString();
-	}
+    /**
+     *
+     * @param stream
+     * @return
+     * @throws IOException
+     */
+public
 
-	public static String encodeURIComponent(String s, String charset)
-	{
-		if (s == null)
-		{
-			return null;
-		}
-		else
-		{
-			String result;
+    static String readInputStream(InputStream stream) throws IOException
+    {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        StringBuffer result = new StringBuffer();
+        String tmp = reader.readLine();
 
-			try
-			{
-				result = URLEncoder.encode(s, charset).replaceAll("\\+", "%20")
-						.replaceAll("\\%21", "!").replaceAll("\\%27", "'")
-						.replaceAll("\\%28", "(").replaceAll("\\%29", ")")
-						.replaceAll("\\%7E", "~");
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				// This exception should never occur
-				result = s;
-			}
+        while (tmp != null) {
+            result.append(tmp.trim());
+            tmp = reader.readLine();
+        }
 
-			return result;
-		}
-	}
+        reader.close();
 
-	private static final char[] CA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-			.toCharArray();
+        return result.toString();
+    }
 
-	private static final int[] IA = new int[256];
-	static
-	{
-		Arrays.fill(IA, -1);
-		for (int i = 0, iS = CA.length; i < iS; i++)
-			IA[CA[i]] = i;
-		IA['='] = 0;
-	}
+public
 
-	/**
-	 * Main
-	 */
-	public static void main(String[] args)
-	{
-		if (args.length < 2)
-		{
-			System.out.println("Usage: xml2js path file");
-		}
-		else
-		{
-			try
-			{
-				Xml2Js fw = new Xml2Js();
+    static String encodeURIComponent(String s, String charset)
+    {
+        if (s == null) {
+            return null;
+        } else {
+            String result;
 
-				// Generates result
-				StringBuffer result = new StringBuffer();
-				result.append("(function() {\nvar f = {};\n");
+            try {
+                result = URLEncoder.encode(s, charset)
+                             .replaceAll("\\+", "%20")
+                             .replaceAll("\\%21", "!")
+                             .replaceAll("\\%27", "'")
+                             .replaceAll("\\%28", "(")
+                             .replaceAll("\\%29", ")")
+                             .replaceAll("\\%7E", "~");
+            } catch (UnsupportedEncodingException e) {
+                // This exception should never occur
+                result = s;
+            }
 
-				List<String> files = fw
-						.walk(new File(new File(".").getCanonicalPath()
-								+ File.separator + args[0]), null);
-				Iterator<String> it = files.iterator();
+            return result;
+        }
+    }
 
-				while (it.hasNext())
-				{
-					result.append(it.next());
-				}
+private
+    static final char[] CA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
-				result.append("\n");
-				result.append("var l = mxStencilRegistry.loadStencil;\n\n");
-				result.append(
-						"mxStencilRegistry.loadStencil = function(filename, fn)\n{\n");
-				result.append("  var t = f[filename.substring(STENCIL_PATH.length + 1)];\n");
-				result.append("  var s = null;\n");
-				result.append("  if (t != null) {\n");
-				result.append("    s = pako.inflateRaw(Uint8Array.from(atob(t), function (c) {\n");
-				result.append("      return c.charCodeAt(0);\n");
-				result.append("    }), {to: 'string'});\n");
-				result.append("  }\n");
-				result.append("  if (fn != null && s != null) {\n");
-				result.append(
-						"    window.setTimeout(function(){fn(mxUtils.parseXml(s))}, 0);\n");
-				result.append("  } else {\n");
-				result.append(
-						"    return (s != null) ? mxUtils.parseXml(s) : l.apply(this, arguments)\n");
-				result.append("  }\n");
-				result.append("};\n");
-				result.append("})();\n");
+private
+    static final int[] IA = new int[256];
+    static
+    {
+        Arrays.fill(IA, -1);
+        for (int i = 0, iS = CA.length; i < iS; i++)
+            IA[CA[i]] = i;
+        IA['='] = 0;
+    }
 
-				FileWriter writer = new FileWriter(
-						new File(new File(".").getCanonicalPath()
-								+ File.separator + args[1]));
-				writer.write(result.toString());
-				writer.flush();
-				writer.close();
-			}
-			catch (IOException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-	}
+    /**
+     * Main
+     */
+public
+
+    static void main(String[] args)
+    {
+        if (args.length < 2) {
+            System.out.println("Usage: xml2js path file");
+        } else {
+            try {
+                Xml2Js fw = new Xml2Js();
+
+                // Generates result
+                StringBuffer result = new StringBuffer();
+                result.append("(function() {\nvar f = {};\n");
+
+                List<String> files = fw.walk(new File(new File(".").getCanonicalPath() + File.separator + args[0]), null);
+                Iterator<String> it = files.iterator();
+
+                while (it.hasNext()) {
+                    result.append(it.next());
+                }
+
+                result.append("\n");
+                result.append("var l = mxStencilRegistry.loadStencil;\n\n");
+                result.append("mxStencilRegistry.loadStencil = function(filename, fn)\n{\n");
+                result.append("  var t = f[filename.substring(STENCIL_PATH.length + 1)];\n");
+                result.append("  var s = null;\n");
+                result.append("  if (t != null) {\n");
+                result.append("    s = pako.inflateRaw(Uint8Array.from(atob(t), function (c) {\n");
+                result.append("      return c.charCodeAt(0);\n");
+                result.append("    }), {to: 'string'});\n");
+                result.append("  }\n");
+                result.append("  if (fn != null && s != null) {\n");
+                result.append("    window.setTimeout(function(){fn(mxUtils.parseXml(s))}, 0);\n");
+                result.append("  } else {\n");
+                result.append("    return (s != null) ? mxUtils.parseXml(s) : l.apply(this, arguments)\n");
+                result.append("  }\n");
+                result.append("};\n");
+                result.append("})();\n");
+
+                FileWriter writer = new FileWriter(new File(new File(".").getCanonicalPath() + File.separator + args[1]));
+                writer.write(result.toString());
+                writer.flush();
+                writer.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

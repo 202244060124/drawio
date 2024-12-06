@@ -6,17 +6,20 @@ quickly and easily.
 
 There are lots and lots of ways to get involved, this document covers:
 
-* [reporting an issue](#reporting-an-issue)
-    * [bug reports](#bug-reports)
-    * [feature requests](#feature-requests)
-    * [change requests](#change-requests)
-* [working on MathJax core](#working-on-mathjax-core)
-    * [key branches and tags](#key-branches--tags)
-    * [submitting pull requests](#submitting-pull-requests)
-    * [testing and quality assurance](#testing-and-quality-assurance)
-    * [writing documentation](#writing-documentation)
-    * [translation](#translation)
-* [Conduct](#conduct)
+- [Contributing to MathJax](#contributing-to-mathjax)
+  - [Reporting An Issue](#reporting-an-issue)
+    - [Bug Reports](#bug-reports)
+    - [Feature Requests](#feature-requests)
+    - [Change Requests](#change-requests)
+  - [Working on MathJax core](#working-on-mathjax-core)
+    - [Key Branches \& Tags](#key-branches--tags)
+    - [Submitting Pull Requests](#submitting-pull-requests)
+        - [Need Help?](#need-help)
+    - [Testing and Quality Assurance](#testing-and-quality-assurance)
+    - [Writing documentation](#writing-documentation)
+    - [Translation](#translation)
+  - [Conduct](#conduct)
+  - [References](#references)
 
 
 ## Reporting An Issue

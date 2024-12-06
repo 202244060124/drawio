@@ -800,9 +800,9 @@
 28-SEP-2023: 22.0.0
 
 - Adds DRAWIO_SERVER_URL as an additional URL to DRAWIO_BASE_URL. BASE_URL used to indicate
-	the URL both the back-end and static code were delivered on. SERVER_URL now provides a 
-	way to delivery on one URL and server the back-end functions on a different URL. 
-	By default the server URL value is blank.
+    the URL both the back-end and static code were delivered on. SERVER_URL now provides a 
+    way to delivery on one URL and server the back-end functions on a different URL. 
+    By default the server URL value is blank.
 - Fixes search for uncompressed shapes, result order
 - Fixes dialog stack order [drawio-3883]
 
@@ -2225,7 +2225,7 @@
 - Fixes touch event handling on Android https://github.com/jgraph/drawio/issues/2579
 - [desktop] Sets offline and offlineApp true
 - [desktop] Display meaningful error when content is imported that requires server
-	https://github.com/jgraph/drawio/issues/2117
+    https://github.com/jgraph/drawio/issues/2117
 - Fixes drag from picker for Chrome on touch devices
 
 25-JAN-2022: 16.4.7
@@ -12007,7 +12007,7 @@ is no breaking change in the editor codebase, but the docker images follow the s
 30-JAN-2011: 1.0.3.1
 
 - Sets svgCanvas variable of ExportServlet to null on each request. Previously,
-	making an SVG export request then broke the other image exports.
+    making an SVG export request then broke the other image exports.
 
 30-JAN-2011: 1.0.3.0
 

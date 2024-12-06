@@ -4,25 +4,25 @@
  */
 DesktopLibrary = function(ui, data, fileObj)
 {
-	LocalLibrary.call(this, ui, data, fileObj.name);
-	this.fileObj = fileObj;
+    LocalLibrary.call(this, ui, data, fileObj.name);
+    this.fileObj = fileObj;
 };
 
-//Extends LocalLibrary
+// Extends LocalLibrary
 mxUtils.extend(DesktopLibrary, LocalLibrary);
 
 /**
- * 
+ *
  */
 DesktopLibrary.prototype.getHash = function()
 {
-	return 'S' + encodeURIComponent(this.fileObj.path);
+    return "S" + encodeURIComponent(this.fileObj.path);
 };
 
 /**
- * 
+ *
  */
 DesktopLibrary.prototype.save = function(revision, success, error)
 {
-	LocalFile.prototype.saveFile.apply(this, arguments);
+    LocalFile.prototype.saveFile.apply(this, arguments);
 };

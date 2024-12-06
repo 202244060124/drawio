@@ -1,67 +1,54 @@
-try
-{
-	function write(text)
-	{
-		document.body.appendChild(document.createTextNode(text));
-	};
+try {
+    function write(text)
+    {
+        document.body.appendChild(document.createTextNode(text));
+    }
 
-	function writeln(text)
-	{
-		write(text);
-		document.body.appendChild(document.createElement('br'));
-	};
-	
-	write('Clearing Cached version ' + EditorUi.VERSION + '...');
+    function writeln(text)
+    {
+        write(text);
+        document.body.appendChild(document.createElement("br"));
+    }
 
-	navigator.serviceWorker.getRegistrations().then(function(registrations)
-	{
-		if (registrations != null && registrations.length > 0)
-		{
-			for (var i = 0; i < registrations.length; i++)
-			{
-				registrations[i].unregister();
-			}
+    write("Clearing Cached version " + EditorUi.VERSION + "...");
 
-			writeln('Done');
-		}
-		else
-		{
-			writeln('OK');
-		}
-		
-		var link = document.createElement('a');
-		link.style.marginRight = '6px';
-		link.setAttribute('href', 'javascript:window.location.reload();');
-		link.appendChild(document.createTextNode('Reload'));
-		document.body.appendChild(link);
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        if (registrations != null && registrations.length > 0) {
+            for (var i = 0; i < registrations.length; i++) {
+                registrations[i].unregister();
+            }
 
-		if ((/test\.draw\.io$/.test(window.location.hostname)) ||
-			(/preprod\.diagrams\.net$/.test(window.location.hostname)) ||
-			(/app\.diagrams\.net$/.test(window.location.hostname)))
-		{
-			link = link.cloneNode(false);
-			link.setAttribute('href', './');
-			link.appendChild(document.createTextNode('Start App'));
-			document.body.appendChild(link);
-		}
-	});
+            writeln("Done");
+        } else {
+            writeln("OK");
+        }
 
-	// Clears corresponding domain of current domain
-	var iframe = document.createElement('iframe');
-	iframe.style.display = 'none';
+        var link = document.createElement("a");
+        link.style.marginRight = "6px";
+        link.setAttribute("href", "javascript:window.location.reload();");
+        link.appendChild(document.createTextNode("Reload"));
+        document.body.appendChild(link);
 
-	if (window.location.hostname == 'ac.draw.io')
-	{
-		iframe.src = 'https://clear.diagrams.net';
-	}
-	else
-	{
-		iframe.src = 'https://clear.draw.io';
-	}
+        if (/ test\.draw\.io$ /.test(window.location.hostname) || / preprod\.diagrams\.net$ /.test(window.location.hostname) ||
+            / app\.diagrams\.net$ /.test(window.location.hostname)) {
+            link = link.cloneNode(false);
+            link.setAttribute("href", "./");
+            link.appendChild(document.createTextNode("Start App"));
+            document.body.appendChild(link);
+        }
+    });
 
-	document.body.appendChild(iframe);
-}
-catch (e)
-{
-	write('Error: ' + e.message);
+    // Clears corresponding domain of current domain
+    var iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+
+    if (window.location.hostname == "ac.draw.io") {
+        iframe.src = "https://clear.diagrams.net";
+    } else {
+        iframe.src = "https://clear.draw.io";
+    }
+
+    document.body.appendChild(iframe);
+} catch (e) {
+    write("Error: " + e.message);
 }
